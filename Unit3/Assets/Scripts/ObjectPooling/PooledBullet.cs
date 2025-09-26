@@ -14,7 +14,9 @@ public class PooledBullet : PooledObject
             linkedPool.ResetBullet(this);
         }else if (collision.gameObject.TryGetComponent(out Target target))
         {
+            target.HitTarget();
 
+            linkedPool.ResetBullet(this);
         }
     }
 }

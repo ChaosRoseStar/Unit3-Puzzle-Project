@@ -49,6 +49,8 @@ public class ShootAbility : MonoBehaviour
 
     public void Shoot()
     {
+        if (!enabled) return;
+
         _currentShootingStrategy?.Shoot(this);
     }
 }

@@ -30,8 +30,20 @@ public class PlayerInput : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+        // Disable shooting ability at start - THIS LINE WAS MISSING!
+        if (baseShootAbility != null)
+        {
+            baseShootAbility.enabled = false;
+        }
 
-        if(Instance == null) 
+        // Hide the blaster visual at start
+        Transform blaster = transform.Find("Main Camera/blasterQ");
+        if (blaster != null)
+        {
+            blaster.gameObject.SetActive(false);
+        }
+
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -41,10 +53,12 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+
     void Update()
     {
-        if (GameManager.instance.currentGameState == GameState.Breifing) return;
-
+        if (GameManager.instance.currentGameState == GameState.Breifing ||
+        GameManager.instance.currentGameState == GameState.GameOver)
+            return;
 
         if (lookAbility != null)
         {
@@ -81,7 +95,7 @@ public class PlayerInput : MonoBehaviour
             interactAbility.Interact();
         }
 
-        if (Input.GetMouseButtonDown(0) && baseShootAbility != null)
+        if (Input.GetMouseButtonDown(0) && baseShootAbility != null && baseShootAbility.enabled)
         {
             baseShootAbility.Shoot();
         }

@@ -1,16 +1,44 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Target : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Target Settings")]
+    public UnityEvent OnTargetHit;
+
+    [Header("Cooldown Settings")]
+    public float cooldownTime = 3f;
+    public bool isOnCooldown = false;
+
+    private float cooldownTimer = 0f;
+
+    public void HitTarget()
     {
-        
+        if (!isOnCooldown)
+        {
+            OnTargetHit.Invoke();
+            StartCooldown();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void StartCooldown()
     {
-        
+        isOnCooldown = true;
+        cooldownTimer = cooldownTime;
+    }
+
+    private void Update()
+    {
+        if (isOnCooldown)
+        {
+            cooldownTimer -= Time.deltaTime;
+
+            if (cooldownTimer <= 0f)
+            {
+                isOnCooldown = false;
+                cooldownTimer = 0f;
+            }
+        }
     }
 }
+
